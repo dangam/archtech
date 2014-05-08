@@ -5,7 +5,7 @@ module.exports = {
 	facebook: {
         clientID: '246951615491530',
         clientSecret: '207017395649a00738f7b2afb43d725e',
-		callbackURL: 'http://localhost:3000/auth/facebook/callback'
+		callbackURL: 'http://archtech.herokuapp.com/auth/facebook/callback'
 	},
 	twitter: {
 		clientID: 'CONSUMER_KEY',
