@@ -8,9 +8,9 @@ module.exports = {
 		callbackURL: 'http://archtech.herokuapp.com/auth/facebook/callback'
 	},
 	twitter: {
-		clientID: 'CONSUMER_KEY',
-		clientSecret: 'CONSUMER_SECRET',
-		callbackURL: 'http://localhost:3000/auth/twitter/callback'
+		clientID: 'qGXvG9choXUO0mCdNu5ByNtEw',
+		clientSecret: 'm7P9VnbXC0rBHmgp52LbBV7QjvN2ogrfw2NTm3EP6pafmLtfNi',
+		callbackURL: 'http://archtech.herokuapp.com/auth/twitter/callback'
 	},
 	google: {
 		clientID: 'APP_ID',
