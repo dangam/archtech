@@ -13,9 +13,9 @@ module.exports = {
 		callbackURL: 'http://archtech.herokuapp.com/auth/twitter/callback'
 	},
 	google: {
-		clientID: 'APP_ID',
-		clientSecret: 'APP_SECRET',
-		callbackURL: 'http://localhost:3000/auth/google/callback'
+		clientID: '332056820137-6j786m73sl6p6sni48j1534626cgbq0o.apps.googleusercontent.com',
+		clientSecret: 'XZRL4LH2oF7SA4TUoTWGtsf6',
+		callbackURL: 'http://archtech.herokuapp.com/auth/google/callback'
 	},
 	linkedin: {
 		clientID: 'APP_ID',
