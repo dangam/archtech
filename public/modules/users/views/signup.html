@@ -1,0 +1,61 @@
+<section class="row" data-ng-controller="AuthenticationController">
+	<div class="col-md-6 text-center">
+	    <h3>Регистрирай се чрез</h3>
+		<a href="/auth/facebook" class="undecorated-link">
+			<img src="/modules/users/img/buttons/facebook.png">
+		</a>
+		<a href="/auth/twitter" class="undecorated-link">
+			<img src="/modules/users/img/buttons/twitter.png">
+		</a>
+		<a href="/auth/google" class="undecorated-link">
+			<img src="/modules/users/img/buttons/google.png">
+		</a>
+		<a href="/auth/linkedin" class="undecorated-link">
+			<img src="/modules/users/img/buttons/linkedin.png">
+		</a>
+	</div>
+	<div class="col-md-6">
+        <h3 class="text-center">или</h3>
+		<form data-ng-submit="signup()" class="signin form-horizontal" novalidate autocomplete="off">
+			<fieldset>
+				<div class="form-group">
+                    <label for="firstName" class="col-lg-3 control-label">Име</label>
+                    <div class="col-lg-9">
+					    <input type="text" required id="firstName" name="firstName" class="form-control" data-ng-model="credentials.firstName" placeholder="Име">
+				    </div>
+                </div>
+				<div class="form-group">
+					<label for="lastName" class="col-lg-3 control-label">Фамилия</label>
+                    <div class="col-lg-9">
+					    <input type="text" id="lastName" name="lastName" class="form-control" data-ng-model="credentials.lastName" placeholder="Фамилия">
+                    </div>
+				</div>
+				<div class="form-group">
+					<label for="email" class="col-lg-3 control-label">И-мeйл</label>
+                    <div class="col-lg-9">
+					    <input type="text" id="email" name="email" class="form-control" data-ng-model="credentials.email" placeholder="И-мейл">
+                    </div>
+				</div>
+				<div class="form-group">
+					<label for="username" class="col-lg-3 control-label">Потребителско име</label>
+                    <div class="col-lg-9">
+					    <input type="text" id="username" name="username" class="form-control" data-ng-model="credentials.username" placeholder="Потребителско име">
+                    </div>
+				</div>
+				<div class="form-group">
+					<label for="password" class="col-lg-3 control-label">Парола</label>
+                    <div class="col-lg-9">
+					    <input type="password" id="password" name="password" class="form-control" data-ng-model="credentials.password" placeholder="Парола">
+                    </div>
+				</div>
+				<div class="text-center form-group">
+					<button type="submit" class="btn btn-large btn-primary">Регистрация</button>&nbsp; или&nbsp;
+					<a href="/#!/signin" class="show-signup">Вход</a>
+				</div>
+				<div data-ng-show="error" class="text-center text-danger">
+					<strong>{{error}}</strong>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</section>

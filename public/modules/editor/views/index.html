@@ -1,0 +1,42 @@
+<section data-ng-controller="EditorController" data-ng-init="home()">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Действия
+                </div>
+                <div class="panel-body">
+                    <a href="">Отвори файл</a><br />
+                    <a href="">Отвори проект</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="well well-sm">
+                <h4>Редактор</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel  panel-default">
+                <div class="panel-heading">
+                    Проекти
+                </div>
+                <div class="panel-body">
+                     <div ng-repeat="project in projects">{{ project.title }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel  panel-default">
+                <div class="panel-heading">
+                    Отворени файлове
+                </div>
+                <div class="panel-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

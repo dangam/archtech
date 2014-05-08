@@ -1,0 +1,97 @@
+.content {
+	margin-top: 50px;
+}
+a.undecorated-link:hover {
+	text-decoration: none;
+}
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+	display: none !important;
+}
+
+.breadcrumb a {
+    color: #FFF;
+}
+#banner {
+    border-bottom: none;
+}
+
+.table tr.primary, .primary {
+    background: #df691a;
+    color: #FFF;
+}
+
+#storage-options button{
+    margin-right: 10px;
+}
+.storage-explorer-head {
+    background: rgba(0,0,0,0.1);
+    padding: 0 7px;
+    font-weight: bold;
+    height: 30px;
+    line-height: 30px;
+}
+.storage-explorer-col {
+    display: inline-block;
+    font-size: 12px;
+}
+.storage-explorer-row {
+    height: 30px;
+    line-height: 30px;
+    padding: 0 7px;
+    border-bottom: 1px solid #CCC;
+    cursor: pointer;
+}
+.storage-explorer-row:hover, .storage-explorer-row.active {
+    background: #4e5d6c;
+    color: #FFF;
+}
+.col-name {
+    width: 57%;
+}
+.col-type {
+    width: 14.5%;
+}
+.col-size {
+    width: 13.5%;
+}
+.col-data {
+    width: 13%;
+}
+.storage-statistics {
+    margin-left: -15px;
+}
+@media screen and (max-width: 991px){
+    .storage-statistics {
+        margin-left: auto;
+    }
+}
+@media screen and (max-width: 665px){
+    .storage-explorer-head, .storage-explorer-row {
+        height: auto;
+        line-height: 25px;
+    }
+    .col-name, .col-type, .col-size, .col-data {
+        display: block;
+    }
+}
+
+.delete-member, .add-member {
+    display: none;
+}
+.member-row:hover .deleteMember, .addMember{
+    display: block;
+}
+.member-row:hover .admin {
+    display: none !important;
+}
+.member-row:hover .self {
+    display: block;
+}
+
+.empty-section {
+    margin-top: 10px;
+}
+
+#editor-wrapper {
+    margin-top:-10px;
+}
