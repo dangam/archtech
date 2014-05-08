@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-    db: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost/archtechv2',
+    db: 'mongodb://dangam:dangam123@ds031329.mongolab.com:31329/archtech',
 	facebook: {
         clientID: '246951615491530',
         clientSecret: '207017395649a00738f7b2afb43d725e',

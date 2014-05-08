@@ -1,10 +1,7 @@
 'use strict';
 
-// mongodb://dangam:dangam123@ds031329.mongolab.com:31329/archtech
-// mongodb://localhost/archtechv2
-
 module.exports = {
-	db: 'mongodb://dangam:dangam123@ds031329.mongolab.com:31329/archtech',
+	db: 'mongodb://localhost/archtechv2',
 	app: {
 		title: 'ArchTech'
 	},
