@@ -2,6 +2,6 @@
     <section data-ng-controller="EditorController" data-ng-init="openFile()" id="editor-wrapper">
         <canvas id="board"></canvas>
         <input type="hidden" id="file" value="{{ file.realName }}">
-        <div ng-if="file !== null" ng-include="'/modules/editor/functions/file.html'"></div>
+        <div ng-if="file !== null" ng-include="'/modules/editor/partials/file.html'"></div>
     </section>
 </div>

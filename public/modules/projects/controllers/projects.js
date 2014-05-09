@@ -27,29 +27,24 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
         };
 
         $scope.remove = function(project) {
-            if (project) {
-                project.$remove();
-                for (var i in $scope.projects) {
-                    if ($scope.projects[i] === project) {
-                        $scope.projects.splice(i, 1);
-                    }
-                }
-            } else {
-                $scope.project.$remove(function() {
-                    $location.path('projects');
-                });
-            }
+            $http.post('/projects/' + project._id + '/delete', project).success(function(res){
+                $location.path('projects');
+            }).error(function(res) {
+                $scope.error = res.message;
+            });
         };
 
         $scope.update = function(){
-            var project = new Projects($scope.project);
+            var project = $scope.project;
             if (!project.updated) {
                 project.updated = [];
             }
             project.updated.push(new Date().getTime());
 
-            project.$update(function(){
+            $http.put('/projects/' + project._id, project).success(function(res){
                 $location.path('projects/' + project._id);
+            }).error(function(res) {
+                $scope.error = res.message;
             });
         };
 
@@ -61,7 +56,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             project.live = state;
             project.updated.push(new Date().getTime());
 
-            $http.put('/projects/' + project._id, project).success(function(res){
+            $http.put('/projects/' + project._id + '/state', project).success(function(res){
                 // Do Something
             }).error(function(res) {
                 $scope.error = res.message;

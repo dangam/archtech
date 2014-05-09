@@ -13,7 +13,8 @@ module.exports = function(app) {
     app.post('/projects', users.requiresLogin, projects.create);
     app.get('/projects/:projectId', projects.open);
     app.put('/projects/:projectId', users.requiresLogin, projects.hasAuthorization, projects.update);
-    app.del('/projects/:projectId', users.requiresLogin, projects.hasAuthorization, projects.delete);
+    app.put('/projects/:projectId/state', users.requiresLogin, projects.hasAuthorization, projects.updateState);
+    app.post('/projects/:projectId/delete', users.requiresLogin, projects.hasAuthorization, projects.delete);
 
     // Project Members Routes
     app.post('/projects/add-member', projects.addMember);

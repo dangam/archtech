@@ -90,6 +90,19 @@ exports.open = function(req, res) {
  * Update a project
  */
 exports.update = function(req, res) {
+    Project.update({ _id: req.body._id }, { title: req.body.title, content: req.body.content }, function(err, project) {
+        if (err) {
+            res.render('error', {
+                status: 500
+            });
+        } else {
+            res.jsonp(project);
+        }
+    });
+
+};
+
+exports.updateState = function(req, res) {
     Project.update({ _id: req.body._id }, { live: req.body.live }, function(err, project) {
         if (err) {
             res.render('error', {
@@ -106,17 +119,9 @@ exports.update = function(req, res) {
  * Delete an project
  */
 exports.delete = function(req, res) {
-    var project = new Project(req.body);
-
-    project.remove(function(err) {
-        if (err) {
-            res.render('error', {
-                status: 500
-            });
-        } else {
-            PMembers.remove({project: project._id}).exec();
-            res.jsonp(project);
-        }
+    Project.remove({ _id: req.body._id }).exec(function(err){
+        if(err) console.log(err);
+        res.end();
     });
 };
 
