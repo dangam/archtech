@@ -60,7 +60,8 @@ exports.open = function(req, res) {
                     files: req.project.files,
                     users: req.project.users,
                     content: req.project.content,
-                    title: req.project.title
+                    title: req.project.title,
+                    live: req.project.live
                 };
 
                 async.each(members, function(member, callback) {
@@ -89,11 +90,7 @@ exports.open = function(req, res) {
  * Update a project
  */
 exports.update = function(req, res) {
-    var project = req.project;
-
-    project = _.extend(project, req.body);
-
-    project.save(function(err) {
+    Project.update({ _id: req.body._id }, { live: req.body.live }, function(err, project) {
         if (err) {
             res.render('error', {
                 status: 500
@@ -102,13 +99,14 @@ exports.update = function(req, res) {
             res.jsonp(project);
         }
     });
+
 };
 
 /**
  * Delete an project
  */
 exports.delete = function(req, res) {
-    var project = req.project;
+    var project = new Project(req.body);
 
     project.remove(function(err) {
         if (err) {
@@ -354,7 +352,7 @@ exports.projectByID = function(req, res, next, id) {
  * Project authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-    if (req.project.user !== req.user.id) {
+    if (req.body.user._id !== req.user.id){
         return res.send(403, 'User is not authorized');
     }
     next();

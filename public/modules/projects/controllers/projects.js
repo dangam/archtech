@@ -29,7 +29,6 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
         $scope.remove = function(project) {
             if (project) {
                 project.$remove();
-
                 for (var i in $scope.projects) {
                     if ($scope.projects[i] === project) {
                         $scope.projects.splice(i, 1);
@@ -42,15 +41,30 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             }
         };
 
-        $scope.update = function() {
-            var project = $scope.project;
+        $scope.update = function(){
+            var project = new Projects($scope.project);
             if (!project.updated) {
                 project.updated = [];
             }
             project.updated.push(new Date().getTime());
 
-            project.$update(function() {
+            project.$update(function(){
                 $location.path('projects/' + project._id);
+            });
+        };
+
+        $scope.liveState = function(state){
+            var project = $scope.project;
+            if (!project.updated) {
+                project.updated = [];
+            }
+            project.live = state;
+            project.updated.push(new Date().getTime());
+
+            $http.put('/projects/' + project._id, project).success(function(res){
+                // Do Something
+            }).error(function(res) {
+                $scope.error = res.message;
             });
         };
 

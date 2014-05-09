@@ -1,4 +1,4 @@
-<section data-ng-controller="EditorController" data-ng-init="home()">
+<section class="container" data-ng-controller="EditorController" data-ng-init="home()">
     <div class="row">
         <div class="col-md-4">
             <div class="panel panel-default">
@@ -6,8 +6,8 @@
                     Действия
                 </div>
                 <div class="panel-body">
-                    <a href="">Отвори файл</a><br />
-                    <a href="">Отвори проект</a>
+                    <a class="btn btn-primary" href="">Отвори файл</a>
+                    <a class="btn btn-primary" href="">Отвори проект</a>
                 </div>
             </div>
         </div>
@@ -24,7 +24,9 @@
                     Проекти
                 </div>
                 <div class="panel-body">
-                     <div ng-repeat="project in projects">{{ project.title }}</div>
+                     <div class="editor-project" ng-repeat="project in projects">{{ project.title }}
+                         <span class="badge" ng-show="project.live === true">Онлайн</span>
+                     </div>
                 </div>
             </div>
         </div>
@@ -34,7 +36,7 @@
                     Отворени файлове
                 </div>
                 <div class="panel-body">
-
+                    <a href="#!/editor/file/{{ file.id }}" ng-repeat="file in openedFiles">{{ file.name }}<br /></a>
                 </div>
             </div>
         </div>

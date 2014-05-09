@@ -8,6 +8,10 @@ angular.module('editor').config(['$stateProvider',
             state('openEditor', {
                 url: '/editor',
                 templateUrl: 'modules/editor/views/index.html'
+            }).
+            state('fileEditor', {
+                url: '/editor/file/:fileId',
+                templateUrl: 'modules/editor/views/editor.html'
             });
     }
 ]);

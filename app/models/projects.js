@@ -36,6 +36,10 @@ var ProjectSchema = new Schema({
     created: {
         type: Date,
         default: Date.now
+    },
+    live: {
+        type: Boolean,
+        default: false
     }
 });
 

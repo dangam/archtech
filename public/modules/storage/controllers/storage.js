@@ -74,16 +74,24 @@ angular.module('storage').controller('StorageController', ['$scope', '$statePara
                     });
                     $scope.selected = '';
                 } else {
-                    var openedFiles = [];
+                    var openedFiles = [], newFile = true;
                     if(webStorage.session.get('openedFiles')){
                         openedFiles = webStorage.session.get('openedFiles');
-                        openedFiles.push({
-                            type: 1,
-                            name: angular.element('#storage-file-' + $scope.selected).data('name'),
-                            id: $scope.selected
-                        });
-                        webStorage.session.add('openedFiles', openedFiles);
-                        console.log(webStorage.session.get('openedFiles'));
+
+                        for(var i = 0; i < openedFiles.length; i++){
+                            if(openedFiles[i].id === $scope.selected){
+                                newFile = false;
+                            }
+                        }
+
+                        if(newFile === true){
+                            openedFiles.push({
+                                type: 1,
+                                name: angular.element('#storage-file-' + $scope.selected).data('name'),
+                                id: $scope.selected
+                            });
+                            webStorage.session.add('openedFiles', openedFiles);
+                        }
                     } else {
                         openedFiles.push({
                             type: 1,
@@ -94,6 +102,7 @@ angular.module('storage').controller('StorageController', ['$scope', '$statePara
                     }
 
                     $scope.selected = '';
+                    $location.path('/editor');
                 }
             }
         };

@@ -9,9 +9,12 @@
 		<a href="/#!/" class="navbar-brand">ArchTech</a>
 	</div>
 	<nav class="collapse navbar-collapse" collapse="!isCollapsed" role="navigation">
-		<ul class="nav navbar-nav" data-ng-show="authentication.user">
+		<ul class="nav navbar-nav head-menu" data-ng-show="authentication.user">
 			<li data-ng-repeat="item in menu" data-ng-show="authentication.user" ui-route="{{item.uiRoute}}" ng-class="{active: $uiRoute}">
-				<a href="/#!/{{item.link}}">{{item.title}}</a>
+				<a href="/#!/{{item.link}}">
+                    <i class="glyphicon {{ item.icon }}"></i>
+                    {{item.title}}
+                </a>
 			</li>
 		</ul>
 		<ul class="nav navbar-nav navbar-right" data-ng-hide="authentication.user">

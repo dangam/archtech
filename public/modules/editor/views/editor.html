@@ -1,26 +1,7 @@
 <div class="row">
-    <section data-ng-controller="EditorController" data-ng-init="init()" id="editor-wrapper">
-        <script src="/lib/fabric/fabric.min.js" type="text/javascript"></script>
-        <script src="/socket.io/socket.io.js"></script>
+    <section data-ng-controller="EditorController" data-ng-init="openFile()" id="editor-wrapper">
         <canvas id="board"></canvas>
-        <script>
-            $(function(){
-                var canvas = new fabric.Canvas('board', {
-                    backgroundColor: 'rgb(200,200,200)',
-                    width: $(document).width(),
-                    height: $(document).height() - 40
-                });
-                fabric.Image.fromURL('/uploads/1092739_2010938.jpg', function(img) {
-                    img.scale(0.5).setFlipX(true);
-                    canvas.add(img);
-                });
-
-
-                var socket = io.connect();
-                var Chat = function(socket) {
-                    this.socket = socket;
-                };
-            });
-        </script>
+        <input type="hidden" id="file" value="{{ file.realName }}">
+        <div ng-if="file !== null" ng-include="'/modules/editor/functions/file.html'"></div>
     </section>
 </div>
