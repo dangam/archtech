@@ -9,7 +9,7 @@ a.undecorated-link:hover {
 }
 
 .breadcrumb a {
-    color: #FFF;
+    color: #333;
 }
 
 .table tr.primary, .primary {
@@ -136,4 +136,116 @@ a.undecorated-link:hover {
 }
 .project-header {
     margin-bottom: 20px;
+}
+.editor-menu {
+    position: fixed;
+    top: 40px;
+    left: 0px;
+    bottom: 0px;
+    background-color: #1c2533;
+    background: -webkit-linear-gradient(70deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
+    background: -o-linear-gradient(70deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
+    background: -ms-linear-gradient(70deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
+    background: -moz-linear-gradient(70deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
+    background: linear-gradient(20deg, #080f1f 30%, #2b4b5a 87%, #435e67 100%);
+    background-attachment: fixed;
+    color: #FFF;
+    width: 50px;
+}
+.editor-menu section {
+    position: relative;
+}
+.editor-menu > section > span {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    display: block;
+    font-size: 1.5em;
+}
+.editor-menu > section:first-child {
+    margin-top: 30px;
+}
+#editor-menu-draw {
+    position: fixed;
+    left: 50px;
+    top:50px;
+    background-color: #1c2533;
+    z-index: 10;
+}
+.editor-menu-context{
+    position: absolute;
+    top: 0%;
+    left: 100%;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 10px;
+    margin: 2px 0 0;
+    list-style: none;
+    font-size: 15px;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    background-clip: padding-box;
+    color: #333;
+    max-height: 500px;
+    overflow: auto;
+    overflow-x: hidden; 
+}
+.editor-chat{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: 1000;
+    display: none;
+    width: 300px;
+    padding: 10px;
+    margin: 2px 0 0;
+    list-style: none;
+    font-size: 15px;
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    background-clip: padding-box;
+    color: #333;
+    height: 300px;
+    overflow: hidden; 
+}
+#editor-page-chat-messages {
+    height: calc(100% - 30px);
+    overflow-y: auto;
+    overflow-x: none; 
+    margin-bottom: 5px;
+}
+#message-input {
+    height: 30px;
+    width: 205px;
+    resize: none;
+    display: inline-block;
+}
+.btn-send-msg {
+    height: 30px;
+    line-height: 15px;
+}
+
+.btn-editor {
+    background: none;
+    border-radius: none;
+    border: none;
+    display: block;
+    border-bottom: 1px solid #CCC;
+    width: 100%;
+    font-weight: bold;
+    height: 30px;
+    line-height: 25px;
+}
+#drawing-mode {
+    margin-top: -30px;
 }

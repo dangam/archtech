@@ -1,5 +1,5 @@
 <section data-ng-controller="StorageController" data-ng-init="init()">
-    <ul class="breadcrumb primary">
+    <ul class="breadcrumb">
         <li><a href="">{{ authentication.user.username }}</a></li>
         <li ng-repeat="file in path"><a href="">{{ file.name }}</a></li>
     </ul>
@@ -58,6 +58,9 @@
                         </li>
                         <li>
                             <a href="" ng-click="open()">Отвори</a>
+                        </li>
+                        <li>
+                            <a href="" ng-click="download()">Изтегли</a>
                         </li>
                         <li>
                             <a href="" ng-click="delete()">Изтрий</a>

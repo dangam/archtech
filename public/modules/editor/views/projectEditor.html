@@ -1,6 +1,6 @@
 <div class="row">
-    <section data-ng-controller="EditorController" data-ng-init="init()" id="editor-wrapper">
-        <div id="bd-wrapper" ng-controller="CanvasControls" class="ng-scope" data-ng-init="initEditor( file )">
+    <section data-ng-controller="EditorController" data-ng-init="openFileProject()" id="editor-wrapper">
+        <div id="bd-wrapper" ng-controller="CanvasControls" class="ng-scope" data-ng-init="init( file )">
             <div id="canvas-wrapper">
                 <div class="canvas-container" style="position: relative; -webkit-user-select: none;">
                     <canvas id="canvas" class="lower-canvas" style="position: absolute; left: 0px; top: 0px; -webkit-user-select: none;"></canvas>
@@ -126,21 +126,20 @@
             </script>
             <div class="editor-menu">
 
-            <section ng-if="project.user._id == authentication.user._id ||  type == 'file'">
+            <section>
                 <span class="glyphicon glyphicon-plus" onclick="openContext('#context-plus')"></span>
-                <div class="editor-menu-context" id="context-plus" style="width:200px;">
+                <div class="editor-menu-context" id="context-plus">
                     <button type="button" class="btn-editor rect" ng-click="addRect()">Квадрат</button>
                     <button type="button" class="btn-editor circle" ng-click="addCircle()">Кръг</button>
                     <button type="button" class="btn-editor triangle" ng-click="addTriangle()">Триъгълник</button>
                     <button type="button" class="btn-editor line" ng-click="addLine()">Права</button>
                     <button type="button" class="btn-editor polygon" ng-click="addPolygon()">Полигон</button>
                     <button tyoe="button" class="btn-editor" ng-click="addText()">Tекст</button>
-                    <button type="button" class="btn-editor" data-toggle="modal" data-target="#upload-file-cloud-modal">Картинка от облак</button>
-                    <button type="button" class="btn-editor" data-toggle="modal" data-target="#upload-file-project-cloud-modal" ng-if="type == 'project'">Картинка от проект</button>
+                    <button type="button" class="btn-editor" ng-click="addImage()">Картинка</button>
                 </div>
             </section>
 
-            <section ng-if="project.user._id == authentication.user._id ||  type == 'file'">
+            <section>
                 <span class="glyphicon glyphicon-pencil" onclick="openContext('#context-draw')"></span>
                 <div class="editor-menu-context" id="context-draw">
                     <div id="drawing-mode-wrapper">
@@ -170,7 +169,7 @@
                 </div>
             </section>
 
-            <section ng-if="project.user._id == authentication.user._id ||  type == 'file'">
+            <section>
                 <span class="glyphicon glyphicon-asterisk" ng-show="canvas.getActiveObject()" onclick="openContext('#context-оptions')"></span>
                 <div class="editor-menu-context" id="context-оptions">
 
@@ -205,7 +204,7 @@
                 </div>
             </section>
 
-            <section ng-if="project.user._id == authentication.user._id ||  type == 'file'">
+            <section>
                 <span class="glyphicon glyphicon-font" ng-show="getText()" onclick="openContext('#context-text')"></span>
                 <div class="editor-menu-context" id="context-text">
                     <div id="text-wrapper" style="margin-top: 10px" ng-show="getText()" class="ng-hide">
@@ -265,7 +264,7 @@
                 </div>
             </section>
 
-            <section ng-if="project.user._id == authentication.user._id ||  type == 'file'">
+            <section>
                 <span class="glyphicon glyphicon-cog" onclick="openContext('#context-settings')"></span>
                 <div class="editor-menu-context" id="context-settings">
                     <!-- <label for="canvas-background-picker">Цвят на фона:</label>
@@ -275,208 +274,53 @@
                 </div>
             </section>
 
-            <section ng-if="project.user._id == authentication.user._id ||  type == 'file'">
-                <span class="glyphicon glyphicon-floppy-disk" ng-click="rasterize()"></span>
-                <!-- <div class="editor-menu-context" id="context-save">
+            <section>
+                <span class="glyphicon glyphicon-floppy-disk" onclick="openContext('#context-save')"></span>
+                <div class="editor-menu-context" id="context-save">
                     <div id="global-controls">
                         <button class="btn-editor" id="rasterize" ng-click="rasterize()">Картинка</button>
                         <button class="btn-editor" id="rasterize-svg" ng-click="rasterizeSVG()">SVG</button>
                         <button class="btn-editor" id="rasterize-json" ng-click="rasterizeJSON()">JSON</button>
                     </div>
-                </div> -->
+                </div>
             </section>
 
-            <script>
-                var socket = io.connect();
-                var Live = function(socket) {
-                    this.socket = socket;
-                };
-
-                Live.prototype.sendMessage = function(user, userId, group, text) {
-                    var message = {
-                        user: user,
-                        userId: userId,
-                        group: group,
-                        text: text
-                    };
-                    this.socket.emit('message', message);
-                };
-
-                Live.prototype.changeGroup = function(group) {
-                    this.socket.emit('join', {
-                        group: group
-                    });
-                    console.log("group changed");
-                    console.log(group);
-                };
-
-                Live.prototype.sendChanges = function(user, group, data) {
-                    var changes = {
-                        user: user,
-                        group: group,
-                        data: data
-                    };
-                    this.socket.emit('changes', changes);
-                };
-
-                $(document).ready(function() {
-                    var liveApp = new Live(socket);
-                    setTimeout(function(){
-                        liveApp.changeGroup($('#group-id').val());
-
-                        socket.on('message', function (message) {
-                            var newElement = $('<div></div>').text(message.text);
-                            $('#editor-page-chat-messages').append(newElement);
-                        });
-
-                        $('#chat-form').submit(function() {
-                            var group = $('#group-id').val(); 
-                            processUserInput(group, liveApp, socket);
-                            return false;
-                        });
-
-                        socket.on('changes', function (changes) {
-                           canvas.clear();
-                           canvas.loadFromJSON(JSON.parse(changes.data));
-                        });
-
-
-                        $('.upper-canvas').click(function(){
-                            if($('#project-user').val() == $('#your-user').val()){
-                                var user = $('#your-user').val(),
-                                    group = $('#group-id').val();
-                                    data = JSON.stringify(canvas);
-                                liveApp.sendChanges(user, group, data);
-                            }
-                        })
-
-                        function divEscapedContentElement(user, message) {
-                            return $('<div></div>').text(user+": "+message);
-                        }
-
-                        function processUserInput(group, liveApp, socket) {
-                            var message = $('#message-input').val(),
-                                user = $('#your-displayName').val(),
-                                userId = $('#your-user').val();
-                            liveApp.sendMessage(user, userId, group, message);
-                            $('#editor-page-chat-messages').append(divEscapedContentElement(user, message));
-                            $('#editor-page-chat-messages').scrollTop($('#editor-page-chat-messages').prop('scrollHeight'));
-                            $('#message-input').val('');
-                        }
-                    }, 500);
-
-                });
-            </script>
-
-            <section ng-if="type == 'project'">
+            <section>
                 <span class="glyphicon glyphicon-envelope" onclick="openChat('#context-chat')"></span>
                 <div class="editor-chat" id="context-chat">
-                    <div class="editor-page-chat-messages" id="editor-page-chat-messages">
-                        <div data-ng-repeat="msg in messages">
-                            {{ msg.user }}: {{ msg.content }}
-                        </div>
+                    <div id="editor-chat-msgs">
+                        <p>sssssssssssssssssssssssss sds d ssssssssssssssssss s s s s ss </p>
+                        <p>sssssssssss</p>
+                        <p>sssssssssss</p>
+                        <p>sssssssssss</p>
+                        <p>sssssssssss</p>
+                        <p>sssssssssss</p>
+                        <p>sssssssssss</p>
+                        <p>sssssssssss</p>
+                        <p>sssssssssss</p>
+                        <p>sssssssssss</p>
+                        <p>sssssssssss</p>
+                        <p>sssssssssss</p>
+                        <p>sssssssssss</p>
+                        <p>sssssssssss</p>
+                        <p>sssssssssss</p>
+                        <p>sssssssssss</p>
+                        <p>sssssssssss</p>
+                        <p>sssssssssss</p>
+                        <p>sssssssssss</p>
+                        <p>sssssssssss</p>
+                        <p>sssssssssss</p>
+                        <p>sssssssssss</p>
+                        <p>sssssssssss</p>
+                        <p>sssssssssss</p>
+                        <p>sssssssssss</p>
+                        <p>sssssssssss</p>
                     </div>
-                    <div class="editor-page-chat-form">
-                        <form id='chat-form' data-id="{{ file._id }}">
-                            <input type="hidden" id="group-id" value="{{ file._id }}">
-                            <input type="hidden" id="project-id" value="{{ project._id }}">
-                            <input type="hidden" id="project-user" value="{{ project.user._id }}">
-                            <input type="hidden" id="your-user" value="{{ authentication.user._id }}">
-                            <input type="hidden" id="your-displayName" value="{{ authentication.user.displayName }}">
-                            <input type="text" id="message-input" data-id="{{ authentication.user._id }}" data-name="{{ authentication.user.displayName }}" placeholder="Съобщение...">
-                            <input type="submit" id="message-button" class="btn btn-primary btn-sm btn-send-msg" value="Изпрати">
-                        </form>
-                    </div>
+                    <textarea id="editor-msg-area"></textarea>
+                    <input type="button" class="btn btn-primary btn-sm btn-send-msg" value="Изпрати">
                 </div>
             </section>
-            </div>
-        </div>
 
-        <!-- Upload file form the Cloud -->
-        <div class="modal" id="upload-file-cloud-modal" role="dialog" aria-labelledby="Upload file form the Cloud" aria-describedby="Uploading file form the Cloud" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <section data-ng-controller="CanvasControls" ng-init="initStorage();">
-                        <form data-ng-submit="addFileCloud()">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                <h4 class="modal-title">Добавяне на файл от облака</h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="storage-explorer">
-                                    <div class="storage-explorer-head">
-                                        <div class="storage-explorer-col col-name">Име</div>
-                                        <div class="storage-explorer-col col-type">Тип</div>
-                                        <div class="storage-explorer-col col-size">Размер</div>
-                                    </div>
-                                    <div class="storage-explorer-body">
-                                        <div class="storage-explorer-row" ng-click="back()" data-ng-hide="path.length === 0">
-                                            <div class="storage-explorer-col col-name">...</div>
-                                        </div>
-                                        <div class="storage-explorer-row" data-ng-repeat="file in storage | orderBy: sortFilesBy" ng-click="changeSelected(); openCloudFolder()" ng-class="{active: '{{ file._id }}' == selected }" id="storage-file-cloud-{{ file._id }}" data-name="{{ file.name }}" data-real-name="{{ file.realName }}">
-                                            <div class="storage-explorer-col col-name">{{ file.name }}</div>
-                                            <div class="storage-explorer-col col-type">{{ file.fileType }}</div>
-                                            <div class="storage-explorer-col col-size">
-                                                <span ng-switch="file.size > 1024*1024" ng-if="file.type != 1">
-                                                    <span ng-switch-when="true">{{file.size / 1024 / 1024 | number:2}} MB</span>
-                                                    <span ng-switch-default>{{file.size / 1024 | number:2}} kB</span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Отказ</button>
-                                <input type="submit" class="btn btn-primary" value="Добави">
-                            </div>
-                        </form>
-                    </section>
-                </div>
-            </div>
-        </div>
-
-        <!-- Upload file form the Project Cloud -->
-        <div class="modal" id="upload-file-project-cloud-modal" role="dialog" aria-labelledby="Upload file form the Project Cloud" aria-describedby="Uploading file form the Project Cloud" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <section data-ng-controller="CanvasControls" ng-init="initProjectStorage();">
-                        <form data-ng-submit="addFileProjectCloud()">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                <h4 class="modal-title">Добавяне на файл от облака</h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="storage-explorer">
-                                    <div class="storage-explorer-head">
-                                        <div class="storage-explorer-col col-name">Име</div>
-                                        <div class="storage-explorer-col col-type">Тип</div>
-                                        <div class="storage-explorer-col col-size">Размер</div>
-                                    </div>
-                                    <div class="storage-explorer-body">
-                                        <div class="storage-explorer-row" ng-click="projectBack()" data-ng-hide="path.length === 0">
-                                            <div class="storage-explorer-col col-name">...</div>
-                                        </div>
-                                        <div class="storage-explorer-row" data-ng-repeat="file in storageProject | orderBy: sortFilesBy" ng-click="changeProjectSelected(); openProjectCloudFolder()" ng-class="{active: '{{ file._id }}' == projectSelected }" id="storage-file-project-cloud-{{ file._id }}" data-name="{{ file.name }}" data-real-name="{{ file.realName }}">
-                                            <div class="storage-explorer-col col-name">{{ file.name }}</div>
-                                            <div class="storage-explorer-col col-type">{{ file.fileType }}</div>
-                                            <div class="storage-explorer-col col-size">
-                                                <span ng-switch="file.size > 1024*1024" ng-if="file.type != 1">
-                                                    <span ng-switch-when="true">{{file.size / 1024 / 1024 | number:2}} MB</span>
-                                                    <span ng-switch-default>{{file.size / 1024 | number:2}} kB</span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Отказ</button>
-                                <input type="submit" class="btn btn-primary" value="Добави">
-                            </div>
-                        </form>
-                    </section>
-                </div>
             </div>
         </div>
     </section>

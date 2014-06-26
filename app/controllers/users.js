@@ -18,10 +18,10 @@ var getErrorMessage = function(err) {
 		switch (err.code) {
 			case 11000:
 			case 11001:
-				message = 'Username already exists';
+				message = 'Потребителското име вече съществува';
 				break;
 			default:
-				message = 'Something went wrong';
+				message = 'Нещо се обърка';
 		}
 	} else {
 		for (var errName in err.errors) {
@@ -119,7 +119,7 @@ exports.update = function(req, res) {
 		});
 	} else {
 		res.send(400, {
-			message: 'User is not signed in'
+			message: 'Потребителят не е влезнал'
 		});
 	}
 };
@@ -150,7 +150,7 @@ exports.changePassword = function(req, res, next) {
 										res.send(400, err);
 									} else {
 										res.send({
-											message: 'Password changed successfully'
+											message: 'Паролата беше сменена успешно'
 										});
 									}
 								});
@@ -158,23 +158,23 @@ exports.changePassword = function(req, res, next) {
 						});
 					} else {
 						res.send(400, {
-							message: 'Passwords do not match'
+							message: 'Паролите не съвпадат'
 						});
 					}
 				} else {
 					res.send(400, {
-						message: 'Current password is incorrect'
+						message: 'Сегашната парола е грешна'
 					});
 				}
 			} else {
 				res.send(400, {
-					message: 'User is not found'
+					message: 'Потребителят не беше намерен'
 				});
 			}
 		});
 	} else {
 		res.send(400, {
-			message: 'User is not signed in'
+			message: 'Потребителят не е влезнал'
 		});
 	}
 };
@@ -245,7 +245,7 @@ exports.userByID = function(req, res, next, id) {
  */
 exports.requiresLogin = function(req, res, next) {
 	if (!req.isAuthenticated()) {
-		return res.send(401, 'User is not logged in');
+		return res.send(401, 'Потребителят не е влезнал');
 	}
 
 	next();
@@ -256,7 +256,7 @@ exports.requiresLogin = function(req, res, next) {
  */
 exports.hasAuthorization = function(req, res, next) {
 	if (req.profile.id !== req.user.id) {
-		return res.send(403, 'User is not authorized');
+		return res.send(403, 'Забранено');
 	}
 
 	next();

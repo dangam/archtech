@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('storage').controller('StorageController', ['$scope', '$stateParams', '$http', '$compile', '$location','Authentication', 'webStorage', 'Storage', 'Statistics',
+angular.module('storage').controller('StorageController', ['$scope', '$stateParams', '$http', '$compile', '$location', 'Authentication', 'webStorage', 'Storage', 'Statistics',
     function($scope, $stateParams, $http, $compile, $location, Authentication, webStorage, Storage, Statistics) {
 
         // scope variables
@@ -61,6 +61,23 @@ angular.module('storage').controller('StorageController', ['$scope', '$statePara
             }
         };
 
+        $scope.download = function(){
+            if($scope.selected !== '') {
+                $http({method: 'GET', url: '/storage/download/'+$scope.selected}).
+                    success(function(data, status, headers, config) {
+                        var element = angular.element('<a/>');
+                        element.attr({
+                            href: '/storage/download/'+$scope.selected,
+                            target: '_blank',
+                            download: angular.element('#storage-file-' + $scope.selected).data('name')
+                        })[0].click();
+                    }).
+                    error(function(data, status, headers, config) {
+                        // if there's an error you should see it here
+                    });
+            }
+        };
+
         $scope.open = function(){
             if($scope.selected !== '') {
                 if(angular.element('#storage-file-' + $scope.selected).data('type') === 1){
@@ -88,7 +105,9 @@ angular.module('storage').controller('StorageController', ['$scope', '$statePara
                             openedFiles.push({
                                 type: 1,
                                 name: angular.element('#storage-file-' + $scope.selected).data('name'),
-                                id: $scope.selected
+                                id: $scope.selected,
+                                fromName: 'Облак',
+                                fromId: ''
                             });
                             webStorage.session.add('openedFiles', openedFiles);
                         }
@@ -96,7 +115,9 @@ angular.module('storage').controller('StorageController', ['$scope', '$statePara
                         openedFiles.push({
                             type: 1,
                             name: angular.element('#storage-file-' + $scope.selected).data('name'),
-                            id: $scope.selected
+                            id: $scope.selected,
+                            fromName: 'Облак',
+                            fromId: ''
                         });
                         webStorage.session.add('openedFiles', openedFiles);
                     }
@@ -134,7 +155,7 @@ angular.module('storage').controller('StorageController', ['$scope', '$statePara
                 });
                 $scope.dir = $scope.selected;
                 $scope.path.push({
-                    name: angular.element('#storage-file-' + $scope.selected).data('name'),
+                    name: angular.element('#storage-file-cloud-' + $scope.selected).data('name'),
                     id: $scope.selected
                 });
                 $scope.selected = '';
@@ -143,7 +164,7 @@ angular.module('storage').controller('StorageController', ['$scope', '$statePara
 
         $scope.uploadFileCloud = function(){
             if($scope.selected !== ''){
-                $http.post('/storage/upload-file-cloud', { id: $stateParams.projectId, file: $scope.selected, folder: $scope.storageDir }).success(function(response){
+                $http.post('/storage/upload-file-cloud', { id: $stateParams.projectId, file: $scope.selected, folder: $scope.dir }).success(function(response){
                     angular.element('#upload-file-cloud-modal').modal('hide');
                     $scope.refreshFolder();
                 }).error(function(response) {

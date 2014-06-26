@@ -8,6 +8,7 @@ var mongoose = require('mongoose'),
     PStorage = mongoose.model('ProjectStorage'),
     _ = require('lodash'),
     path = require('path'),
+    mime = require('mime'),
     fs = require('fs'),
     fse = require('fs-extra'),
     formidable = require('formidable'),
@@ -132,6 +133,26 @@ exports.uploadCloudFile = function(req, res){
 
 exports.remove = function(req, res){
     Storage.remove({_id: req.params.id}).exec();
+};
+
+exports.download = function(req, res){
+    Storage.findOne({ _id: req.params.id }).exec(function(err, data){
+        if(err) console.log('Error finding the file from DB: ' + err);
+        else {
+            console.log(data);
+            var filePath = join(dir, data.realName);
+
+            res.download(filePath, data.name);
+            // var filename = path.basename(file);
+            // var mimetype = mime.lookup(file);
+
+            // res.setHeader('Content-disposition', 'attachment; filename=' + filename);
+            // res.setHeader('Content-type', mimetype);
+
+            // var filestream = fs.createReadStream(file);
+            // filestream.pipe(res);
+        }
+    });
 };
 
 /**

@@ -1,42 +1,27 @@
 <section class="container" data-ng-controller="EditorController" data-ng-init="home()">
     <div class="row">
         <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Действия
-                </div>
-                <div class="panel-body">
-                    <a class="btn btn-primary" href="">Отвори файл</a>
-                    <a class="btn btn-primary" href="">Отвори проект</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-8">
-            <div class="well well-sm">
-                <h4>Редактор</h4>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
             <div class="panel  panel-default">
                 <div class="panel-heading">
                     Проекти
                 </div>
                 <div class="panel-body">
                      <div class="editor-project" ng-repeat="project in projects">{{ project.title }}
-                         <span class="badge" ng-show="project.live === true">Онлайн</span>
+                         <span class="badge" ng-show="project.live === true"><a href="#!/editor/project/{{project._id}}" style="color: #FFF;">Участвай</a></span>
                      </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-8">
             <div class="panel  panel-default">
                 <div class="panel-heading">
                     Отворени файлове
                 </div>
                 <div class="panel-body">
-                    <a href="#!/editor/file/{{ file.id }}" ng-repeat="file in openedFiles">{{ file.name }}<br /></a>
+                    <div ng-repeat="file in openedFiles">
+                        <a href="#!/editor/file/{{ file.id }}" ng-if="file.type == 1">{{ file.name }}</a>
+                        <a href="#!/editor/project/{{ file.fromId }}/file/{{ file.id }}" ng-if="file.type == 2">{{file.fromName}} / {{ file.name }}</a>
+                    </div>
                 </div>
             </div>
         </div>

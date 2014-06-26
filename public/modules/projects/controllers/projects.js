@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('projects').controller('ProjectsController', ['$scope', '$stateParams', '$location', '$http', 'Authentication', 'Projects', 'ProjectsStorage',
-    function($scope, $stateParams, $location, $http, Authentication, Projects, ProjectsStorage){
+angular.module('projects').controller('ProjectsController', ['$scope', '$stateParams', '$location', '$http', 'Authentication', 'webStorage', 'Storage', 'Projects', 'ProjectsStorage',
+    function($scope, $stateParams, $location, $http, Authentication, webStorage, Storage, Projects, ProjectsStorage){
 
         $scope.authentication = Authentication;
         $scope.users = [];
@@ -120,6 +120,56 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             });
         };
 
+        $scope.open = function(){
+            if($scope.selected !== '') {
+                if(angular.element('#storage-file-' + $scope.selected).data('type') === 1){
+                    $scope.storage = ProjectsStorage.openFolder({
+                        projectId: $stateParams.projectId,
+                        inFolder: $scope.selected
+                    });
+                    $scope.dir = $scope.selected;
+                    $scope.path.push({
+                        name: angular.element('#storage-file-' + $scope.selected).data('name'),
+                        id: $scope.selected
+                    });
+                    $scope.selected = '';
+                } else {
+                    var openedFiles = [], newFile = true;
+                    if(webStorage.session.get('openedFiles')){
+                        openedFiles = webStorage.session.get('openedFiles');
+
+                        for(var i = 0; i < openedFiles.length; i++){
+                            if(openedFiles[i].id === $scope.selected){
+                                newFile = false;
+                            }
+                        }
+
+                        if(newFile === true){
+                            openedFiles.push({
+                                type: 2,
+                                name: angular.element('#storage-file-' + $scope.selected).data('name'),
+                                id: $scope.selected,
+                                fromName: angular.element('#storage-file-' + $scope.selected).data('project'),
+                                fromId: angular.element('#storage-file-' + $scope.selected).data('projectid')
+                            });
+                            webStorage.session.add('openedFiles', openedFiles);
+                        }
+                    } else {
+                        openedFiles.push({
+                            type: 2,
+                            name: angular.element('#storage-file-' + $scope.selected).data('name'),
+                            id: $scope.selected,
+                            fromName: angular.element('#storage-file-' + $scope.selected).data('project'),
+                            fromId: angular.element('#storage-file-' + $scope.selected).data('projectid')
+                        });
+                        webStorage.session.add('openedFiles', openedFiles);
+                    }
+
+                    $scope.selected = '';
+                    $location.path('/editor');
+                }
+            }
+        };
 
         /* Project Storage Methods */
 

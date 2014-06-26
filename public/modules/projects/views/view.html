@@ -102,7 +102,7 @@
                         <div class="storage-explorer-row" ng-click="storageBack()" data-ng-hide="path.length === 0">
                             <div class="storage-explorer-col col-name">...</div>
                         </div>
-                        <div class="storage-explorer-row" data-ng-repeat="file in storage | orderBy: sortFilesBy" ng-click="storageChangeSelected()" ng-class="{active: '{{ file._id }}' == selected }" id="storage-file-{{ file._id }}" data-name="{{ file.name }}">
+                        <div class="storage-explorer-row" data-ng-repeat="file in storage | orderBy: sortFilesBy" ng-click="storageChangeSelected()" ng-dblclick="open()" ng-class="{active: '{{ file._id }}' == selected }" id="storage-file-{{ file._id }}" data-name="{{ file.name }}" data-project="{{ project.title }}" data-projectid="{{ project._id }}" data-type="{{ file.type }}">
                             <div class="storage-explorer-col col-name">{{ file.name }}</div>
                             <div class="storage-explorer-col col-type">{{ file.fileType }}</div>
                             <div class="storage-explorer-col col-size">
@@ -198,7 +198,7 @@
                                     <div class="storage-explorer-row" ng-click="back()" data-ng-hide="path.length === 0">
                                         <div class="storage-explorer-col col-name">...</div>
                                     </div>
-                                    <div class="storage-explorer-row" data-ng-repeat="file in storage | orderBy: sortFilesBy" ng-click="changeSelected(); openCloudFolder()" ng-class="{active: '{{ file._id }}' == selected }" id="storage-file-{{ file._id }}" data-name="{{ file.name }}">
+                                    <div class="storage-explorer-row" data-ng-repeat="file in storage | orderBy: sortFilesBy" ng-click="changeSelected(); openCloudFolder()" ng-class="{active: '{{ file._id }}' == selected }" id="storage-file-cloud-{{ file._id }}" data-name="{{ file.name }}">
                                         <div class="storage-explorer-col col-name">{{ file.name }}</div>
                                         <div class="storage-explorer-col col-type">{{ file.fileType }}</div>
                                         <div class="storage-explorer-col col-size">
